@@ -16,13 +16,16 @@ export default function Contact() {
     message: "Currently available for freelance projects and full-time opportunities. If you have something in mind, I'd love to hear about it.",
     githubUrl: "#",
     linkedinUrl: "#",
-    twitterUrl: "#"
+    twitterUrl: "#",
+    githubLogo: "",
+    linkedinLogo: "",
+    twitterLogo: ""
   });
 
   const socials = [
-    { icon: Github, label: 'GitHub', href: data.githubUrl || '#' },
-    { icon: Linkedin, label: 'LinkedIn', href: data.linkedinUrl || '#' },
-    { icon: Twitter, label: 'Twitter / X', href: data.twitterUrl || '#' },
+    { icon: Github, logo: data.githubLogo, label: 'GitHub', href: data.githubUrl || '#' },
+    { icon: Linkedin, logo: data.linkedinLogo, label: 'LinkedIn', href: data.linkedinUrl || '#' },
+    { icon: Twitter, logo: data.twitterLogo, label: 'Twitter / X', href: data.twitterUrl || '#' },
   ];
 
   const lines = Array.isArray(data.lines) ? data.lines : ["LET'S BUILD", "SOMETHING"];
@@ -100,7 +103,7 @@ export default function Contact() {
             </a>
 
             <div className="flex items-center gap-3">
-              {socials.map(({ icon: Icon, label, href }) => (
+              {socials.map(({ icon: Icon, logo, label, href }) => (
                 <a
                   key={label}
                   href={href}
@@ -114,13 +117,21 @@ export default function Contact() {
                       : 'none',
                   }}
                 >
-                  <Icon
-                    size={15}
-                    className={socialHovers[label] ? 'animate-spin' : ''}
-                    style={{
-                      animationDuration: '1.5s',
-                    }}
-                  />
+                  {logo ? (
+                    <img 
+                      src={logo} 
+                      alt={label} 
+                      className={`w-[16px] h-[16px] object-contain transition-transform duration-300 filter invert opacity-80 group-hover:opacity-100 group-hover:scale-110`}
+                    />
+                  ) : (
+                    <Icon
+                      size={15}
+                      className={socialHovers[label] ? 'animate-spin' : ''}
+                      style={{
+                        animationDuration: '1.5s',
+                      }}
+                    />
+                  )}
                 </a>
               ))}
             </div>

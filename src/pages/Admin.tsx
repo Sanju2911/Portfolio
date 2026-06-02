@@ -158,6 +158,20 @@ export default function Admin() {
     }
   };
 
+  const handleSocialLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>, platform: 'githubLogo' | 'linkedinLogo' | 'twitterLogo') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImageId(platform);
+    try {
+      const url = await uploadImage(file);
+      updateParsedField('contact', [platform], url);
+    } catch (err: any) {
+      alert("Upload failed: " + err.message);
+    } finally {
+      setUploadingImageId(null);
+    }
+  };
+
   const handleProjectImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -488,33 +502,110 @@ export default function Admin() {
                 className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white min-h-[60px] focus:border-white/40 outline-none resize-y"
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs text-white/50 uppercase mb-1">GitHub URL</label>
-                <input 
-                  type="text" 
-                  value={parsedContent.contact?.githubUrl || ''} 
-                  onChange={e => updateParsedField('contact', ['githubUrl'], e.target.value)} 
-                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* GitHub */}
+              <div className="p-3 bg-black/40 rounded border border-white/10 space-y-3">
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">GitHub URL</label>
+                  <input 
+                    type="text" 
+                    value={parsedContent.contact?.githubUrl || ''} 
+                    onChange={e => updateParsedField('contact', ['githubUrl'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-xs text-white focus:border-white/40 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">GitHub Custom Logo</label>
+                  <input 
+                    type="text" 
+                    placeholder="Logo URL or Upload"
+                    value={parsedContent.contact?.githubLogo || ''} 
+                    onChange={e => updateParsedField('contact', ['githubLogo'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-[10px] text-white focus:border-white/40 outline-none mb-1.5"
+                  />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => handleSocialLogoUpload(e, 'githubLogo')} 
+                    className="w-full text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[9px] file:font-semibold file:bg-white file:text-black hover:file:bg-white/80 cursor-pointer file:cursor-pointer"
+                  />
+                  {uploadingImageId === 'githubLogo' && <span className="text-[9px] text-emerald-400 block mt-1">Uploading...</span>}
+                </div>
+                {parsedContent.contact?.githubLogo && (
+                  <div className="h-10 w-10 flex items-center justify-center bg-black/60 rounded border border-white/10 p-1">
+                    <img src={parsedContent.contact.githubLogo} alt="GitHub Preview" className="h-full w-full object-contain filter invert" />
+                  </div>
+                )}
               </div>
-              <div>
-                <label className="block text-xs text-white/50 uppercase mb-1">LinkedIn URL</label>
-                <input 
-                  type="text" 
-                  value={parsedContent.contact?.linkedinUrl || ''} 
-                  onChange={e => updateParsedField('contact', ['linkedinUrl'], e.target.value)} 
-                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
-                />
+
+              {/* LinkedIn */}
+              <div className="p-3 bg-black/40 rounded border border-white/10 space-y-3">
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">LinkedIn URL</label>
+                  <input 
+                    type="text" 
+                    value={parsedContent.contact?.linkedinUrl || ''} 
+                    onChange={e => updateParsedField('contact', ['linkedinUrl'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-xs text-white focus:border-white/40 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">LinkedIn Custom Logo</label>
+                  <input 
+                    type="text" 
+                    placeholder="Logo URL or Upload"
+                    value={parsedContent.contact?.linkedinLogo || ''} 
+                    onChange={e => updateParsedField('contact', ['linkedinLogo'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-[10px] text-white focus:border-white/40 outline-none mb-1.5"
+                  />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => handleSocialLogoUpload(e, 'linkedinLogo')} 
+                    className="w-full text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[9px] file:font-semibold file:bg-white file:text-black hover:file:bg-white/80 cursor-pointer file:cursor-pointer"
+                  />
+                  {uploadingImageId === 'linkedinLogo' && <span className="text-[9px] text-emerald-400 block mt-1">Uploading...</span>}
+                </div>
+                {parsedContent.contact?.linkedinLogo && (
+                  <div className="h-10 w-10 flex items-center justify-center bg-black/60 rounded border border-white/10 p-1">
+                    <img src={parsedContent.contact.linkedinLogo} alt="LinkedIn Preview" className="h-full w-full object-contain filter invert" />
+                  </div>
+                )}
               </div>
-              <div>
-                <label className="block text-xs text-white/50 uppercase mb-1">Twitter / X URL</label>
-                <input 
-                  type="text" 
-                  value={parsedContent.contact?.twitterUrl || ''} 
-                  onChange={e => updateParsedField('contact', ['twitterUrl'], e.target.value)} 
-                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
-                />
+
+              {/* Twitter */}
+              <div className="p-3 bg-black/40 rounded border border-white/10 space-y-3">
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">Twitter / X URL</label>
+                  <input 
+                    type="text" 
+                    value={parsedContent.contact?.twitterUrl || ''} 
+                    onChange={e => updateParsedField('contact', ['twitterUrl'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-xs text-white focus:border-white/40 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 uppercase mb-1">Twitter / X Custom Logo</label>
+                  <input 
+                    type="text" 
+                    placeholder="Logo URL or Upload"
+                    value={parsedContent.contact?.twitterLogo || ''} 
+                    onChange={e => updateParsedField('contact', ['twitterLogo'], e.target.value)} 
+                    className="w-full p-2 bg-black rounded border border-white/20 text-[10px] text-white focus:border-white/40 outline-none mb-1.5"
+                  />
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => handleSocialLogoUpload(e, 'twitterLogo')} 
+                    className="w-full text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[9px] file:font-semibold file:bg-white file:text-black hover:file:bg-white/80 cursor-pointer file:cursor-pointer"
+                  />
+                  {uploadingImageId === 'twitterLogo' && <span className="text-[9px] text-emerald-400 block mt-1">Uploading...</span>}
+                </div>
+                {parsedContent.contact?.twitterLogo && (
+                  <div className="h-10 w-10 flex items-center justify-center bg-black/60 rounded border border-white/10 p-1">
+                    <img src={parsedContent.contact.twitterLogo} alt="Twitter Preview" className="h-full w-full object-contain filter invert" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
