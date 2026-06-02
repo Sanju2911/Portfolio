@@ -19,8 +19,11 @@ export default function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5 flex items-center justify-between transition-all duration-500 ${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : ''
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5 flex items-center justify-between transition-all duration-500 ${
+        scrolled || menuOpen
+          ? 'bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5'
+          : 'max-md:bg-[#0a0a0a]/80 max-md:backdrop-blur-md max-md:border-b max-md:border-white/5 bg-transparent'
+      }`}
     >
       <button
         onClick={() => scrollTo('hero')}
@@ -80,7 +83,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-[#0a0a0a]/98 backdrop-blur-md border-b border-white/5 px-6 py-8 flex flex-col gap-6 md:hidden animate-slide-down">
+        <div className="absolute top-full left-0 right-0 bg-[#0a0a0a]/80 backdrop-blur-lg border-b border-white/5 px-6 py-8 flex flex-col gap-6 md:hidden animate-slide-down">
           {['about', 'work', 'process', 'contact'].map((item) => (
             <button
               key={item}
