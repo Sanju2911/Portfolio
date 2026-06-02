@@ -3,12 +3,6 @@ import { useInView } from '../hooks/useInView';
 import { useState } from 'react';
 import { useContent } from '../hooks/useContent';
 
-const socials = [
-  { icon: Github, label: 'GitHub', href: '#' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Twitter, label: 'Twitter / X', href: '#' },
-];
-
 export default function Contact() {
   const { ref, inView } = useInView();
   const [emailHovered, setEmailHovered] = useState(false);
@@ -19,8 +13,17 @@ export default function Contact() {
     highlight: "GREAT.",
     email: "alex@example.com",
     availability: "Available for new projects — Starting Q1 2025",
-    message: "Currently available for freelance projects and full-time opportunities. If you have something in mind, I'd love to hear about it."
+    message: "Currently available for freelance projects and full-time opportunities. If you have something in mind, I'd love to hear about it.",
+    githubUrl: "#",
+    linkedinUrl: "#",
+    twitterUrl: "#"
   });
+
+  const socials = [
+    { icon: Github, label: 'GitHub', href: data.githubUrl || '#' },
+    { icon: Linkedin, label: 'LinkedIn', href: data.linkedinUrl || '#' },
+    { icon: Twitter, label: 'Twitter / X', href: data.twitterUrl || '#' },
+  ];
 
   const lines = Array.isArray(data.lines) ? data.lines : ["LET'S BUILD", "SOMETHING"];
 

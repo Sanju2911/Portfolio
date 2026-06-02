@@ -488,6 +488,35 @@ export default function Admin() {
                 className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white min-h-[60px] focus:border-white/40 outline-none resize-y"
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs text-white/50 uppercase mb-1">GitHub URL</label>
+                <input 
+                  type="text" 
+                  value={parsedContent.contact?.githubUrl || ''} 
+                  onChange={e => updateParsedField('contact', ['githubUrl'], e.target.value)} 
+                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-white/50 uppercase mb-1">LinkedIn URL</label>
+                <input 
+                  type="text" 
+                  value={parsedContent.contact?.linkedinUrl || ''} 
+                  onChange={e => updateParsedField('contact', ['linkedinUrl'], e.target.value)} 
+                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-white/50 uppercase mb-1">Twitter / X URL</label>
+                <input 
+                  type="text" 
+                  value={parsedContent.contact?.twitterUrl || ''} 
+                  onChange={e => updateParsedField('contact', ['twitterUrl'], e.target.value)} 
+                  className="w-full p-2 bg-black rounded border border-white/20 text-sm text-white focus:border-white/40 outline-none"
+                />
+              </div>
+            </div>
           </div>
         );
       case 'footer':
