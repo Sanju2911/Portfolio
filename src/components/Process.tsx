@@ -1,7 +1,8 @@
 import { useInView } from '../hooks/useInView';
 import { useState } from 'react';
+import { useContent } from '../hooks/useContent';
 
-const steps = [
+const defaultSteps = [
   {
     number: '01',
     title: 'Discover & Define',
@@ -28,7 +29,7 @@ const steps = [
   },
 ];
 
-function ProcessStep({ step, index }: { step: typeof steps[0]; index: number }) {
+function ProcessStep({ step, index }: { step: any; index: number }) {
   const { ref, inView } = useInView();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -81,6 +82,15 @@ function ProcessStep({ step, index }: { step: typeof steps[0]; index: number }) 
 
 export default function Process() {
   const { ref, inView } = useInView();
+  const { data } = useContent('process', {
+    headline: 'How I Work',
+    subtitle: 'A structured approach that keeps projects moving with clarity and purpose — from first conversation to final deployment.',
+    steps: defaultSteps
+  });
+
+  const headline = data.headline || 'How I Work';
+  const subtitle = data.subtitle || 'A structured approach that keeps projects moving with clarity and purpose — from first conversation to final deployment.';
+  const steps = Array.isArray(data.steps) ? data.steps : defaultSteps;
 
   return (
     <section id="process" className="px-6 md:px-10 py-24 md:py-40 border-t border-white/5">
@@ -103,7 +113,7 @@ export default function Process() {
               }`}
               style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)', transitionDelay: '100ms' }}
             >
-              How I Work
+              {headline}
             </h2>
             <p
               className={`mt-5 text-white/40 text-[15px] leading-relaxed max-w-lg transition-all duration-700 hover:text-white/60 ${
@@ -111,8 +121,7 @@ export default function Process() {
               }`}
               style={{ transitionDelay: '200ms' }}
             >
-              A structured approach that keeps projects moving with clarity and
-              purpose — from first conversation to final deployment.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -120,7 +129,7 @@ export default function Process() {
         {/* Steps */}
         <div>
           {steps.map((step, i) => (
-            <ProcessStep key={step.number} step={step} index={i} />
+            <ProcessStep key={step.number || i} step={step} index={i} />
           ))}
         </div>
       </div>

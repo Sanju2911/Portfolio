@@ -19,15 +19,14 @@ export default function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5 flex items-center justify-between transition-all duration-500 ${
-        scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : ''
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-5 flex items-center justify-between transition-all duration-500 ${scrolled ? 'bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5' : ''
+        }`}
     >
       <button
         onClick={() => scrollTo('hero')}
         className="font-display font-bold text-white text-sm tracking-widest uppercase hover:text-white/70 transition-all duration-300 hover:scale-105 origin-left"
       >
-        Alex Mercer
+        Sathwik Tadivaka
       </button>
 
       <div className="hidden md:flex items-center gap-10">
@@ -41,9 +40,8 @@ export default function Nav() {
           >
             {item}
             <span
-              className={`absolute -bottom-1 left-0 h-px bg-white transition-all duration-300 ${
-                navItems[item] ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}
+              className={`absolute -bottom-1 left-0 h-px bg-white transition-all duration-300 ${navItems[item] ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}
             />
           </button>
         ))}
@@ -67,19 +65,16 @@ export default function Nav() {
         aria-label="Menu"
       >
         <span
-          className={`block w-5 h-px bg-white transition-all duration-300 ${
-            menuOpen ? 'rotate-45 translate-y-2' : ''
-          }`}
+          className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''
+            }`}
         />
         <span
-          className={`block w-5 h-px bg-white transition-all duration-300 ${
-            menuOpen ? 'opacity-0' : ''
-          }`}
+          className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''
+            }`}
         />
         <span
-          className={`block w-5 h-px bg-white transition-all duration-300 ${
-            menuOpen ? '-rotate-45 -translate-y-2' : ''
-          }`}
+          className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''
+            }`}
         />
       </button>
 

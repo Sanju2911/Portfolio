@@ -1,6 +1,7 @@
 import { ArrowUpRight, Mail, Github, Linkedin, Twitter } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 import { useState } from 'react';
+import { useContent } from '../hooks/useContent';
 
 const socials = [
   { icon: Github, label: 'GitHub', href: '#' },
@@ -12,6 +13,16 @@ export default function Contact() {
   const { ref, inView } = useInView();
   const [emailHovered, setEmailHovered] = useState(false);
   const [socialHovers, setSocialHovers] = useState<Record<string, boolean>>({});
+
+  const { data } = useContent('contact', {
+    lines: ["LET'S BUILD", "SOMETHING"],
+    highlight: "GREAT.",
+    email: "alex@example.com",
+    availability: "Available for new projects — Starting Q1 2025",
+    message: "Currently available for freelance projects and full-time opportunities. If you have something in mind, I'd love to hear about it."
+  });
+
+  const lines = Array.isArray(data.lines) ? data.lines : ["LET'S BUILD", "SOMETHING"];
 
   return (
     <section id="contact" className="px-6 md:px-10 py-24 md:py-40 border-t border-white/5 relative overflow-hidden">
@@ -43,21 +54,20 @@ export default function Contact() {
             }`}
             style={{ fontSize: 'clamp(2.8rem, 9vw, 8rem)', transitionDelay: '100ms' }}
           >
-            LET'S BUILD
+            {lines[0] || "LET'S BUILD"}
             <br />
-            SOMETHING
+            {lines[1] || "SOMETHING"}
             <br />
-            <span className="text-white/20 hover:text-white/40 transition-colors duration-500">GREAT.</span>
+            <span className="text-white/20 hover:text-white/40 transition-colors duration-500">{data.highlight || "GREAT."}</span>
           </h2>
 
           <p
-            className={`text-white/40 text-lg mb-12 max-w-xl leading-relaxed transition-all duration-700 hover:text-white/60 ${
+            className={`text-white/40 text-lg mb-12 max-w-xl leading-relaxed transition-all duration-700 hover:text-white/65 ${
               inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
             style={{ transitionDelay: '200ms' }}
           >
-            Currently available for freelance projects and full-time opportunities.
-            If you have something in mind, I'd love to hear about it.
+            {data.message || "Currently available for freelance projects and full-time opportunities. If you have something in mind, I'd love to hear about it."}
           </p>
 
           <div
@@ -67,7 +77,7 @@ export default function Contact() {
             style={{ transitionDelay: '300ms' }}
           >
             <a
-              href="mailto:alex@example.com"
+              href={`mailto:${data.email || "alex@example.com"}`}
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
               className="inline-flex items-center gap-3 bg-white text-black px-7 py-4 rounded-full text-sm font-semibold hover:bg-white/88 transition-all duration-300 group hover:scale-105 hover:shadow-lg"
@@ -79,7 +89,7 @@ export default function Contact() {
                 size={15}
                 className={emailHovered ? 'animate-bounce' : ''}
               />
-              alex@example.com
+              {data.email || "alex@example.com"}
               <ArrowUpRight
                 size={14}
                 className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300"
@@ -125,7 +135,7 @@ export default function Contact() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-xs text-white/35 tracking-wide hover:text-white/55 transition-colors duration-300 group cursor-default">
-              Available for new projects — Starting Q1 2025
+              {data.availability || "Available for new projects — Starting Q1 2025"}
             </span>
           </div>
         </div>

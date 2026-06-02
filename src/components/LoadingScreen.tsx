@@ -35,7 +35,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             animation: 'fadeInBlur 0.8s cubic-bezier(0.16,1,0.3,1) forwards',
           }}
         >
-          ALEX
+          SATH
         </div>
       </div>
 

@@ -1,10 +1,21 @@
 import { useInView } from '../hooks/useInView';
 import { useRef, useState } from 'react';
+import { useContent } from '../hooks/useContent';
 
 export default function About() {
   const { ref, inView } = useInView();
   const imgRef = useRef<HTMLImageElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  
+  const { data } = useContent('about', {
+    quote: '"The best digital products are the ones you don\'t notice — they simply work, feel right, and leave you wanting more."',
+    paragraphs: [
+      "I'm Alex Mercer, a full-stack developer and product designer based in San Francisco. Over eight years I've shipped digital products for startups, scale-ups, and global brands — from consumer apps to complex enterprise platforms.",
+      "My work lives at the intersection of engineering and design. I obsess over the details others overlook: the 200ms animation that makes a transition feel alive, the information architecture that makes complex data feel simple, the code structure that makes future change painless."
+    ],
+    image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600",
+    locationString: "San Francisco, CA — Available 2025"
+  });
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!imgRef.current) return;
@@ -39,25 +50,18 @@ export default function About() {
               className={`font-display text-[clamp(1.4rem,2.8vw,2.4rem)] font-semibold leading-[1.25] text-white mb-10 ${reveal()}`}
               style={{ transitionDelay: '100ms' }}
             >
-              "The best digital products are the ones you don't notice —
-              they simply work, feel right, and leave you wanting more."
+              {data.quote}
             </blockquote>
 
             <div
               className={`space-y-5 text-white/45 text-[15px] leading-[1.8] ${reveal()}`}
               style={{ transitionDelay: '200ms' }}
             >
-              <p className="hover:text-white/65 transition-colors duration-500">
-                I'm Alex Mercer, a full-stack developer and product designer based in San Francisco.
-                Over eight years I've shipped digital products for startups, scale-ups, and global
-                brands — from consumer apps to complex enterprise platforms.
-              </p>
-              <p className="hover:text-white/65 transition-colors duration-500">
-                My work lives at the intersection of engineering and design. I obsess over the
-                details others overlook: the 200ms animation that makes a transition feel alive,
-                the information architecture that makes complex data feel simple, the code
-                structure that makes future change painless.
-              </p>
+              {data.paragraphs.map((p: string, i: number) => (
+                <p key={i} className="hover:text-white/65 transition-colors duration-500">
+                  {p}
+                </p>
+              ))}
             </div>
 
             <div
@@ -89,8 +93,8 @@ export default function About() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-white/5">
               <img
                 ref={imgRef}
-                src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Alex Mercer"
+                src={data.image}
+                alt="Profile"
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 style={{
                   transform: `perspective(1000px) rotateY(${mousePos.x * 0.5}deg) rotateX(${-mousePos.y * 0.5}deg) scale(1.02)`,
@@ -99,7 +103,7 @@ export default function About() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/70 via-transparent to-transparent" />
             </div>
             <p className="mt-3 text-[10px] text-white/20 tracking-widest uppercase hover:text-white/40 transition-colors duration-300">
-              San Francisco, CA — Available 2025
+              {data.locationString}
             </p>
           </div>
         </div>

@@ -1,11 +1,15 @@
-const skills = [
+import { useContent } from '../hooks/useContent';
+
+const defaultSkills = [
   'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'UI/UX Design',
   'System Architecture', 'Next.js', 'React Native', 'Product Strategy',
   'Motion Design', 'AWS', 'Figma', 'GraphQL', 'Tailwind CSS',
 ];
 
 export default function Skills() {
-  const doubled = [...skills, ...skills];
+  const { data } = useContent('skills', { items: defaultSkills });
+  const items = Array.isArray(data.items) ? data.items : defaultSkills;
+  const doubled = [...items, ...items];
 
   return (
     <section className="py-14 border-t border-white/5 overflow-hidden select-none">

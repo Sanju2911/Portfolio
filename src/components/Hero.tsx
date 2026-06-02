@@ -1,8 +1,20 @@
 import { useEffect, useState } from 'react';
 import { ArrowDown } from 'lucide-react';
+import { useContent } from '../hooks/useContent';
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
+  const { data } = useContent('hero', {
+    meta1: 'Portfolio — 2024',
+    meta2: 'Based in San Francisco, CA',
+    lines: ['CRAFTING', 'DIGITAL', 'EXPERIENCES'],
+    subtitle: 'Full-stack developer & designer building products that fuse technical precision with thoughtful, lasting design.',
+    stats: [
+      { value: '8+', label: 'Years' },
+      { value: '60+', label: 'Projects' },
+      { value: '30+', label: 'Clients' }
+    ]
+  });
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 80);
@@ -39,14 +51,14 @@ export default function Hero() {
           transitionDelay: '600ms',
         }}
       >
-        <span className="line-reveal">Portfolio — 2024</span>
-        <span className="line-reveal" style={{ animationDelay: '0.1s' }}>Based in San Francisco, CA</span>
+        <span className="line-reveal">{data.meta1}</span>
+        <span className="line-reveal" style={{ animationDelay: '0.1s' }}>{data.meta2}</span>
       </div>
 
       {/* Main display headline */}
       <div className="flex-1 flex flex-col justify-center py-12 md:py-20">
-        {lines.map((line, i) => (
-          <div key={line} className="overflow-hidden">
+        {data.lines.map((line: string, i: number) => (
+          <div key={line + i} className="overflow-hidden">
             <h1
               className={`font-display font-bold leading-[0.88] tracking-tight transition-all duration-1000 ${
                 i === 1 ? 'text-white/15 pl-4 md:pl-10' : 'text-white'
@@ -81,14 +93,14 @@ export default function Hero() {
                 transform: loaded ? 'translateY(0)' : 'translateY(12px)',
               }}
             >
-              Full-stack developer &amp; designer building products that fuse technical precision with thoughtful, lasting design.
+              {data.subtitle}
             </span>
           </p>
 
           <div className="flex items-center gap-8 text-white/30 text-xs shrink-0">
-            {[['8+', 'Years'], ['60+', 'Projects'], ['30+', 'Clients']].map(([n, l], i, arr) => (
+            {data.stats.map((stat: any, i: number, arr: any[]) => (
               <div
-                key={l}
+                key={stat.label}
                 className="flex items-center gap-8 transition-all duration-500 hover:text-white/60"
                 style={{
                   opacity: loaded ? 1 : 0,
@@ -98,9 +110,9 @@ export default function Hero() {
               >
                 <div className="group cursor-default">
                   <div className="font-display font-bold text-white text-2xl mb-0.5 transition-all duration-300 group-hover:text-white/80 group-hover:scale-110 origin-left">
-                    {n}
+                    {stat.value}
                   </div>
-                  <div className="tracking-wide">{l}</div>
+                  <div className="tracking-wide">{stat.label}</div>
                 </div>
                 {i < arr.length - 1 && <div className="w-px h-7 bg-white/10 transition-all duration-300 group-hover:bg-white/20" />}
               </div>

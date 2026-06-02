@@ -1,8 +1,9 @@
 import { ArrowUpRight } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
-const projects = [
+const initialProjects = [
   {
     id: '01',
     title: 'Meridian',
@@ -41,7 +42,7 @@ const projects = [
   },
 ];
 
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: any; index: number }) {
   const { ref, inView } = useInView();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -144,6 +145,17 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
 export default function Work() {
   const { ref, inView } = useInView();
+  const [projects, setProjects] = useState(initialProjects);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+      if (data && data.length > 0) {
+        setProjects(data);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   return (
     <section id="work" className="px-6 md:px-10 py-24 md:py-40 border-t border-white/5">
